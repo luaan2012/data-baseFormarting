@@ -1,5 +1,4 @@
-# data-baseFormarting
-## @model DynamicTableResult
+@model DynamicTableResult
 @{
     ViewData["Title"] = "Campanha";
     var dt = string.Empty;
@@ -10,11 +9,11 @@
 
 }
 
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
-
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/datetime/1.1.2/css/dataTables.dateTime.min.css"> 
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/searchbuilder/1.3.2/css/searchBuilder.dataTables.min.css">
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/datetime/1.1.2/css/dataTables.dateTime.min.css">
+<link href="https://nightly.datatables.net/searchbuilder/css/searchBuilder.dataTables.css" rel="stylesheet" type="text/css" />
+<link href="https://cdn.datatables.net/datetime/1.1.2/css/dataTables.dateTime.css" rel="stylesheet" type="text/css" />
 
 <div class="content">
     <div class="container-fluid">
@@ -50,23 +49,33 @@
                                     }
                                     else if (column.Key?.Equals("Última Compra") ?? false)
                                     {
-                                        if (!string.IsNullOrEmpty(column.Value.RemoveSpace()))
+                                        if (!string.IsNullOrEmpty(column.Value))
                                         {
-                                             dt = column.Value;
+                                            dt = column.Value;
                                             date = dt.Replace("/","");
                                             year = date.Substring(4, 4);
                                             day = date.Substring(0, 2);
                                             month = date.Substring(2, 2);
                                             date = year +"-"+ month + "-" + day;
-                                            
-                                            <td data-order='@date' scope="col">
+
+                                            <td scope="col">
                                                 @*<span style="display:none">@date</span>*@
                                                 @column.Value
                                             </td>
                                         }
                                         else
                                         {
-                                            <td scope="col">01/02/2022</td>                                            
+                                            <td scope="col">01/02/2022</td>
+                                        }
+                                    }
+                                    else if (column.Key?.Equals("ValorReais") ?? false)
+                                    {
+                                        if(!string.IsNullOrEmpty(column.Value))
+                                        {
+                                            <td scope="col">R$ @column.Value</td>
+                                        }else
+                                        {
+                                            <td scope="col">R$ 0,00</td>
                                         }
                                     }
                                     else
@@ -95,19 +104,20 @@
 </div>
 
 @section Scripts{
+    <script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/luxon/1.25.0/luxon.min.js"></script>
+
     <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.5.1.js"></script>
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/searchbuilder/1.3.2/js/dataTables.searchBuilder.min.js"></script>
+
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/plug-ins/1.10.24/sorting/datetime-luxon.js"></script>
+
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/datetime/1.1.2/js/dataTables.dateTime.min.js"></script>
 
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
+    <script src="https://nightly.datatables.net/searchbuilder/js/dataTables.searchBuilder.js"></script>
 
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/searchbuilder/1.0.1/js/dataTables.searchBuilder.min.js"></script>
-    <script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/plug-ins/1.11.5/sorting/datetime-moment.js"></script>
-
-    <script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/luxon/1.25.0/luxon.min.js"></script>
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/plug-ins/1.10.24/sorting/datetime-luxon.js"></script>
 
 
 
@@ -172,7 +182,7 @@
                     },
                     dom: 'Qlfrtip',
                     searchBuilder: {
-                        columns: [0,1,2,3,4,5,6,7,8]
+                        columns: [0,1,2,3,4,5,6,7,8,9]
                     }
             });
 
